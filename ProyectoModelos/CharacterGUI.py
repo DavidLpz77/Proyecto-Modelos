@@ -3,6 +3,7 @@ from EnlistCharacter import EnlistCharacter
 import pygame, sys
 from pygame.locals import *
 from random import randint
+import time
 
 
 class charChooserGUI:
@@ -244,20 +245,19 @@ class charChooserGUI:
                 if cursor.colliderect(self.rect):
                     self.imagen_actual=self.imagen_seleccion
                 else: self.imagen_actual=self.imagen_normal
-
                 pantalla.blit(self.imagen_actual,self.rect)
+
+           
 
 
         class Animation():
-
             pygame.init()
             ventana = pygame.display.set_mode((1024, 683))
             SonidoEspada = pygame.mixer.Sound("Musica/samurai.wav")
-            pygame.display.set_caption("personajes")
-
+            pygame.display.set_caption("personajes")         
             atras1=pygame.image.load("imagenes/button11.png")
             atras2=pygame.image.load("imagenes/button1.png")
-
+           
             boton1=Boton(atras1,atras2,0,0)
             cursor1=Cursor()
             r1=pygame.Rect(50,440,300,500)
@@ -266,15 +266,13 @@ class charChooserGUI:
             imagen_cursor=pygame.image.load("imagenes/cursor.png")
             pX=0
             pY=0
-            cont1=1000
-            cont2=1000
-            cont3=1000
+            cont1=300
+            segundos=0
+            
             imagen_arma = pygame.image.load(imweapon)
             imagen_personaje = pygame.image.load(imchar)
             imagen_aurora = pygame.image.load(imAurora)
             
-
-
             if (raze == 1) or (raze == 5):
                 
                 X = 0
@@ -360,11 +358,12 @@ class charChooserGUI:
             verde = (0, 255, 0)
             derecha = True
             
-            
             pygame.mixer.music.load('Musica/musica1.wav')
             pygame.mixer.music.play(-1)
             sangre = pygame.image.load("imagenes/sangre.png")
             wood = pygame.image.load("imagenes/2.png")
+            wood2 = pygame.image.load("imagenes/2.png")
+        
             while True:
                 ventana.fill(verde)
                 ventana.blit(fondo, (0, 0))
@@ -390,9 +389,11 @@ class charChooserGUI:
                     ventana.blit(imagen_personaje, (posX2, posY2))
                     ventana.blit(imagen_arma, (X2, Y2))
                 ventana.blit(imagen_cursor, (pX,pY))
-                ventana.blit(wood, (450,30))
+                ventana.blit(wood, (350,0))
+                ventana.blit(wood2, (670,0))
 
                 for event in pygame.event.get():
+                      
                     if event.type == QUIT:
                         pygame.quit()
                         sys.exit()
@@ -401,8 +402,7 @@ class charChooserGUI:
                         if cursor1.colliderect(boton1.rect):
                             root = Tk()
                             root.title("Elejir Personaje")
-                            root.configure(bg="white")
-
+                            root.configure(bg="white")   
                             charChooser = charChooserGUI(root)
                             pygame.display.quit()
                             pygame.mixer.init()
@@ -413,29 +413,85 @@ class charChooserGUI:
                         if cursor1.colliderect(r1):
                             pintar_rect=True
                             SonidoEspada.play()
-                            ventana.blit(sangre,(0,300))
-                            cont1=cont1-10
-                            print(" vida:"+ str(cont1))
-                            if cont1==0:
-                                print("Te han matado")
+                            ventana.blit(sangre,(300,300))
+                            if segundos >=20:
+                                 fuente1 = pygame.font.Font("fuente/sangre.ttf",100)
+                                 perder="SE ACABO EL TIEMPO"
+                                 gm="GAME OVER"
+                                 perder= fuente1.render(perder,1,(254,000,000))
+                                 ventana.blit(perder,(200,200))
+                                 gm=fuente1.render(gm,1,(254,000,000))
+                                 ventana.blit(gm,(400,300))
+                                 pintar_rect=False  
+                                 cont1=cont1=0
+                                 segundos=segundos=0
+                            elif cont1 >0:
+                                cont1=cont1-10
+                                print("vida:"+ str(cont1))
+                            else:    
+                                if cont1==0:
+                                    fuente1 = pygame.font.Font("fuente/sangre.ttf",100)
+                                    ganar="GANASTE"
+                                    ganar= fuente1.render(ganar,1,(254,000,000))
+                                    ventana.blit(ganar,(300,300))
+                                    cont1=cont1=0
+                                    segundos=segundos=0
+                                    pintar_rect=False
                         if cursor1.colliderect(r2):
                             pintar_rect=True
                             SonidoEspada.play()
                             ventana.blit(sangre,(300,300))
-                            cont1=cont1-10
-                            print("vida:"+ str(cont1))
-                            if cont1==0:
-                                print("Te han matado")     
+                            if segundos >=20:
+                                 fuente1 = pygame.font.Font("fuente/sangre.ttf",100)
+                                 perder="SE ACABO EL TIEMPO"
+                                 gm="GAME OVER"
+                                 gm=fuente1.render(gm,1,(254,000,000))
+                                 ventana.blit(gm,(400,300))
+                                 perder= fuente1.render(perder,1,(254,000,000))
+                                 ventana.blit(perder,(200,200))
+                                 pintar_rect=False  
+                                 cont1=cont1=0
+                                 segundos=segundos=0
+                            elif cont1 >0:
+                                cont1=cont1-10
+                                print("vida:"+ str(cont1))
+                            else:    
+                                if cont1==0:
+                                    fuente1 = pygame.font.Font("fuente/sangre.ttf",100)
+                                    ganar="GANASTE"
+                                    ganar= fuente1.render(ganar,1,(254,000,000))
+                                    ventana.blit(ganar,(300,300))
+                                    cont1=cont1=0
+                                    segundos=segundos=0
+                                    pintar_rect=False
+                                  
                         if cursor1.colliderect(r3):
                             pintar_rect=True
                             SonidoEspada.play()
-                            ventana.blit(sangre,(600,300))
-                            cont1=cont1-10
-                            print("vida:"+ str(cont1))
-                            if cont1==0:
-                                print("Te han matado")
-                                
-                            
+                            ventana.blit(sangre,(300,300))
+                            if segundos >=20:
+                                 fuente1 = pygame.font.Font("fuente/sangre.ttf",100)
+                                 perder="SE ACABO EL TIEMPO"
+                                 gm="GAME OVER"
+                                 gm=fuente1.render(gm,1,(254,000,000))
+                                 ventana.blit(gm,(400,300))
+                                 perder= fuente1.render(perder,1,(254,000,000))
+                                 ventana.blit(perder,(200,200))
+                                 pintar_rect=False   
+                                 cont1=cont1=0
+                                 segundos=segundos=0
+                            elif cont1 >0:
+                                cont1=cont1-10
+                                print("vida:"+ str(cont1))
+                            else:    
+                                if cont1==0:
+                                    fuente1 = pygame.font.Font("fuente/sangre.ttf",100)
+                                    ganar="GANASTE"
+                                    ganar= fuente1.render(ganar,1,(254,000,000))
+                                    ventana.blit(ganar,(300,300))
+                                    cont1=cont1=0
+                                    segundos=segundos=0
+                                    pintar_rect=False
                                 
                     if event.type == pygame.MOUSEBUTTONUP:
                         if cursor1.colliderect(r1):
@@ -473,11 +529,26 @@ class charChooserGUI:
                 if keys[K_SPACE]:
                     SonidoEspada.play()
                     personaje1.attack()
-                fuente = pygame.font.Font("fuente/Sketch3D.otf",40)
+                fuente = pygame.font.Font("fuente/Sketch3D.otf",35)
+
                 text1="Vida:"+str(cont1)
                 texto1= fuente.render(text1,1,(155,127,22))
-                ventana.blit(texto1,(500,50))
+                ventana.blit(texto1,(400,20))
                 
+                segundos=pygame.time.get_ticks()/1000
+                if segundos>=20:
+                    segundos=segundos=20
+                    cronometro="Tiempo:"+str(segundos)
+                    cronometro=fuente.render(cronometro,0,(155,127,22))
+                    ventana.blit(cronometro,(720,20))
+                elif cont1==0:
+                    segundos = segundos = 0
+
+                else:
+                    cronometro="Tiempo:"+str(segundos)
+                    cronometro=fuente.render(cronometro,0,(155,127,22))
+                    ventana.blit(cronometro,(720,20))
+                    
                 cursor1.update()
                 boton1.update(ventana,cursor1)
                 pX,pY= pygame.mouse.get_pos()
